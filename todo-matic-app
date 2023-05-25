@@ -1,0 +1,87 @@
+import { useState } from "react";
+import styled from "styled-components";
+
+//Style Components//
+const Wrapper = styled.span`
+  width: 40%;
+  height: 500px;
+  display: flex;
+  background-color: lightgrey;
+  margin: 0 auto;
+  border-radius: 5%;
+  font-family: arial;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const Input = styled.input`
+  width: 50%;
+  height: 10%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border-radius: 50px;
+  box-sizing: border-box;
+  border: 2px solid grey;
+`;
+const Button = styled.button`
+  width: 50%;
+  height: 10%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border-radius: 50px;
+  box-sizing: border-box;
+  background-color: blue;
+`;
+
+// React Component//
+
+export function TodoList() {
+  //We add the useState hook and declared the variable state and its setter function//
+  const [toDoList, setToDoList] = useState([]);
+  const [newToDo, setNewToDo] = useState("");
+
+  // handler functions//
+
+  const handleInput = (event) => {
+    setNewToDo(event.target.value);
+  };
+  const addToDo = () => {
+    setToDoList([...toDoList, newToDo]);
+  };
+
+  const deleteToDo = (toDoName) => {
+    const newToDoList = toDoList.filter((toDo) => {
+      return toDo !== toDoName;
+    });
+    setToDoList(newToDoList);
+  };
+
+  return (
+    <Wrapper>
+      <h1>To Do List</h1>
+      <Input
+        value={newToDo}
+        onChange={handleInput}
+        placeholder="Add your new thing to do"
+      />
+      <Button type="submit" onClick={addToDo}>
+        Add To The List
+      </Button>
+      <div className="list">
+        <ul>
+          {toDoList.map((toDo) => {
+            return (
+              <>
+                <li>{toDo}</li>
+                <Button type="button" onClick={() => deleteToDo(toDo)}>
+                  X
+                </Button>
+              </>
+            );
+          })}
+        </ul>
+      </div>
+    </Wrapper>
+  );
+}
